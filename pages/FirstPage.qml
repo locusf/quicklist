@@ -15,10 +15,18 @@ Page {
                 id: itemlabel
                 x: theme.paddingLarge
                 text: name
+                font.strikeout: deleted
             }
             property bool striked: itemlabel.font.strikeout;
             onClicked: {
                 itemlabel.font.strikeout = (itemlabel.font.strikeout? false: true)
+                var ine = 0;
+                for(ine=0;ine<listmodel.count;ine++){
+                    if (listmodel.get(ine).name == name) {
+                        listmodel.remove(ine)
+                    }
+                }
+                listmodel.append({name:name, deleted: true})
             }
             onPressAndHold: {
                 var ine = 0;
@@ -37,10 +45,21 @@ Page {
         PushUpMenu {
           MenuItem {
               text: "Add item"
-              onClicked: additem.visible = true
+              onClicked: {
+                  additem.visible = true
+                  additem.forceActiveFocus()
+              }
+          }
+          MenuItem {
+              text: "Clear"
+              onClicked: listmodel.clear()
           }
         }
         PullDownMenu {
+            MenuItem {
+                text: "Add item"
+                onClicked: additem.visible = true
+            }
             MenuItem {
                 text: "Clear"
                 onClicked: listmodel.clear()
@@ -54,15 +73,17 @@ Page {
         // of the page, followed by our content.
         Column {
             TextField {
-                id: additem
+                 id: additem
                  width: 480
                  height: 300
-                 placeholderText: "Item"
+                 placeholderText: ""
                  visible: false
-
+                 onFocusOutBehaviorChanged: {
+                     additem.visible = false
+                 }
                  Keys.onReturnPressed: {
                      additem.visible = false
-                     listmodel.append({name: additem.text})
+                     listmodel.append({name: additem.text, deleted: false})
                      additem.text = ""
                  }
              }
