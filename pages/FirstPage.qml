@@ -10,6 +10,12 @@ Page {
         header: PageHeader {
             title: "QuickList"
         }
+        Label {
+            text: "Pull up or down to add item"
+            id: hintlbl
+            color: Qt.darker(theme.highlightColor, 1.5)
+            font.weight: Font.Light
+        }
         delegate: BackgroundItem {
             Label {
                 id: itemlabel
@@ -17,7 +23,6 @@ Page {
                 text: name
                 font.strikeout: deleted
             }
-            property bool striked: itemlabel.font.strikeout;
             onClicked: {
                 itemlabel.font.strikeout = (itemlabel.font.strikeout? false: true)
                 var ine = 0;
@@ -47,6 +52,7 @@ Page {
               text: "Add item"
               onClicked: {
                   additem.visible = true
+                  hintlbl.visible = false
                   additem.forceActiveFocus()
               }
           }
@@ -57,13 +63,18 @@ Page {
         }
         PullDownMenu {
             MenuItem {
-                text: "Add item"
-                onClicked: additem.visible = true
-            }
-            MenuItem {
                 text: "Clear"
                 onClicked: listmodel.clear()
             }
+            MenuItem {
+                text: "Add item"
+                onClicked: {
+                    additem.visible = true
+                    hintlbl.visible = false
+                    additem.forceActiveFocus()
+                }
+            }
+
         }
         
         // Tell SilicaFlickable the height of its content.
@@ -74,10 +85,11 @@ Page {
         Column {
             TextField {
                  id: additem
-                 width: 480
-                 height: 300
+                 width: 300
                  placeholderText: ""
                  visible: false
+                 horizontalAlignment: left
+                 textMargin: 15
                  onFocusOutBehaviorChanged: {
                      additem.visible = false
                  }
@@ -85,6 +97,28 @@ Page {
                      additem.visible = false
                      listmodel.append({name: additem.text, deleted: false})
                      additem.text = ""
+                     parent.focus = true
+                 }
+                 background: Component {
+                     Rectangle {
+                         id: customBackground
+
+                         anchors.fill: parent
+                         border {
+                             color: parent.errorHighlight ?  "red" :"steelblue"
+                             width: parent.errorHighlight ? 3 : 1
+                         }
+                         color: "steelblue"
+                         radius: 5
+                         smooth: true
+                         gradient: Gradient {
+                             GradientStop { position: 0.0; color: customBackground.color }
+                             GradientStop {
+                                 position: 1.0;
+                                 color: parent.errorHighlight ? "red" : Qt.darker(customBackground.color, 3.0)
+                             }
+                         }
+                     }
                  }
              }
 

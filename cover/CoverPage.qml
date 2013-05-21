@@ -3,7 +3,7 @@ import Sailfish.Silica 1.0
 
 Rectangle {
     anchors.fill: parent
-    color: "black"
+    color: "steelblue"
     
     Label {
         id: label
