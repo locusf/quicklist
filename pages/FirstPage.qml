@@ -4,6 +4,9 @@ import Sailfish.Silica 1.0
 Page {
     id: page
 
+    RemorsePopup {
+        id: clearRemorse
+    }
     // To enable PullDownMenu, place our content in a SilicaFlickable
     SilicaListView {
         anchors.fill: parent
@@ -22,6 +25,7 @@ Page {
             id: hintlbl
         }
         delegate: BackgroundItem {
+            id: itemdelegate
             Label {
                 id: itemlabel
                 x: theme.paddingLarge
@@ -39,13 +43,16 @@ Page {
                 listmodel.append({name:name, deleted: true})
             }
             onPressAndHold: {
+                delremorse.execute(itemdelegate, "Deleting", function(){
                 var ine = 0;
                 for(ine=0;ine<listmodel.count;ine++){
                     if (listmodel.get(ine).name == name) {
                         listmodel.remove(ine)
                     }
                 }
+                }, 1500)
             }
+            RemorseItem {id: delremorse}
         }
         model: listmodel
         ListModel {
@@ -74,13 +81,13 @@ Page {
           }
           MenuItem {
               text: "Clear all"
-              onClicked: listmodel.clear()
+              onClicked: clearRemorse.execute("Clearing", function() {listmodel.clear()}, 1500)
           }
         }
         PullDownMenu {
             MenuItem {
                 text: "Clear all"
-                onClicked: listmodel.clear()
+                onClicked: clearRemorse.execute("Clearing", function() {listmodel.clear()}, 1500)
             }
             MenuItem {
                 text: "Clear striked"
