@@ -10,11 +10,16 @@ Page {
         header: PageHeader {
             title: "QuickList"
         }
+        Button {
+            text: "Add item"
+            onClicked:{
+                additem.visible = true
+                hintlbl.visible = false
+                additem.forceActiveFocus()
+            }
+        }
         Label {
-            text: "Pull up or down to add item"
             id: hintlbl
-            color: Qt.darker(theme.highlightColor, 1.5)
-            font.weight: Font.Light
         }
         delegate: BackgroundItem {
             Label {
@@ -57,14 +62,36 @@ Page {
               }
           }
           MenuItem {
-              text: "Clear"
+              text: "Clear striked"
+              onClicked: {
+                  var i = 0;
+                  for (i = 0; i <= listmodel.count; i++) {
+                      if (listmodel.get(i).deleted) {
+                          listmodel.remove(i)
+                      }
+                  }
+              }
+          }
+          MenuItem {
+              text: "Clear all"
               onClicked: listmodel.clear()
           }
         }
         PullDownMenu {
             MenuItem {
-                text: "Clear"
+                text: "Clear all"
                 onClicked: listmodel.clear()
+            }
+            MenuItem {
+                text: "Clear striked"
+                onClicked: {
+                    var i = 0;
+                    for (i = 0; i <= listmodel.count; i++) {
+                        if (listmodel.get(i).deleted) {
+                            listmodel.remove(i)
+                        }
+                    }
+                }
             }
             MenuItem {
                 text: "Add item"
@@ -123,6 +150,7 @@ Page {
              }
 
         }
+
 
 
     }
