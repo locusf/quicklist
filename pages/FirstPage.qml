@@ -3,12 +3,22 @@ import Sailfish.Silica 1.0
 
 Page {
     id: page
+    function do_add_item() {
+        additem.visible = true
+        hintlbl.visible = false
+        additem.forceActiveFocus()
+    }
 
     RemorsePopup {
         id: clearRemorse
     }
     // To enable PullDownMenu, place our content in a SilicaFlickable
     SilicaListView {
+        id: itemview
+        ViewPlaceholder {
+            enabled: itemview.count == 0
+            text: "Add by pressing button or using menus."
+        }
         anchors.fill: parent
         header: PageHeader {
             title: "QuickList"
@@ -16,9 +26,7 @@ Page {
         Button {
             text: "Add item"
             onClicked:{
-                additem.visible = true
-                hintlbl.visible = false
-                additem.forceActiveFocus()
+                do_add_item()
             }
         }
         Label {
@@ -26,13 +34,7 @@ Page {
         }
         delegate: BackgroundItem {
             id: itemdelegate
-            Label {
-                id: itemlabel
-                x: theme.paddingLarge
-                text: name
-                font.strikeout: deleted
-            }
-            onClicked: {
+            function delete_and_append() {
                 itemlabel.font.strikeout = (itemlabel.font.strikeout? false: true)
                 var ine = 0;
                 for(ine=0;ine<listmodel.count;ine++){
@@ -42,7 +44,7 @@ Page {
                 }
                 listmodel.append({name:name, deleted: true})
             }
-            onPressAndHold: {
+            function delete_with_remorse() {
                 delremorse.execute(itemdelegate, "Deleting", function(){
                 var ine = 0;
                 for(ine=0;ine<listmodel.count;ine++){
@@ -52,46 +54,41 @@ Page {
                 }
                 }, 1500)
             }
+
+            Label {
+                id: itemlabel
+                x: theme.paddingLarge
+                text: name
+                font.strikeout: deleted
+            }
+            onClicked: {
+                delete_and_append()
+            }
+            onPressAndHold: {
+                delete_with_remorse()
+            }
             RemorseItem {id: delremorse}
         }
         model: listmodel
         ListModel {
             id: listmodel
         }
-        // PullDownMenu and PushUpMenu must be declared in SilicaFlickable, SilicaListView or SilicaGridView
-        PushUpMenu {
-          MenuItem {
-              text: "Add item"
-              onClicked: {
-                  additem.visible = true
-                  hintlbl.visible = false
-                  additem.forceActiveFocus()
-              }
-          }
-          MenuItem {
-              text: "Clear striked"
-              onClicked: {
-                  var i = 0;
-                  for (i = 0; i <= listmodel.count; i++) {
-                      if (listmodel.get(i).deleted) {
-                          listmodel.remove(i)
-                      }
-                  }
-              }
-          }
-          MenuItem {
-              text: "Clear all"
-              onClicked: clearRemorse.execute("Clearing", function() {listmodel.clear()}, 1500)
-          }
-        }
+
         PullDownMenu {
+
+
+
             MenuItem {
                 text: "Clear all"
-                onClicked: clearRemorse.execute("Clearing", function() {listmodel.clear()}, 1500)
+                onClicked: do_remorse_clear()
+                function do_remorse_clear()
+                {
+                    clearRemorse.execute("Clearing", function() {listmodel.clear()}, 1500)
+                }
             }
             MenuItem {
                 text: "Clear striked"
-                onClicked: {
+                function clear_striked() {
                     var i = 0;
                     for (i = 0; i <= listmodel.count; i++) {
                         if (listmodel.get(i).deleted) {
@@ -99,13 +96,15 @@ Page {
                         }
                     }
                 }
+
+                onClicked: {
+                    clear_striked()
+                }
             }
             MenuItem {
                 text: "Add item"
                 onClicked: {
-                    additem.visible = true
-                    hintlbl.visible = false
-                    additem.forceActiveFocus()
+                    do_add_item()
                 }
             }
 
@@ -128,11 +127,36 @@ Page {
                      additem.visible = false
                  }
                  Keys.onReturnPressed: {
+                     custom_add()
+                 }
+                 function custom_add() {
                      additem.visible = false
                      listmodel.append({name: additem.text, deleted: false})
+                     do_sort()
                      additem.text = ""
                      parent.focus = true
                  }
+                 function do_sort(obj)
+                 {
+                     var n;
+                     var i;
+                     for (n=0; n < listmodel.count; n++)
+                     {
+                         for (i=n+1; i < listmodel.count; i++)
+                         {
+                             var n_obj = listmodel.get(n);
+                             var i_obj = listmodel.get(i);
+                             var one = new String(n_obj.name);
+                             var other = new String(i_obj.name);
+                             if (one.localeCompare(other) == 1 && !i_obj.deleted)
+                             {
+                                 listmodel.move(i, n, 1);
+                                 n=0;
+                             }
+                         }
+                     }
+                 }
+
                  background: Component {
                      Rectangle {
                          id: customBackground
