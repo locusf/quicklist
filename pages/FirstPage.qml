@@ -75,9 +75,6 @@ Page {
         }
 
         PullDownMenu {
-
-
-
             MenuItem {
                 text: "Clear all"
                 onClicked: do_remorse_clear()
@@ -90,13 +87,17 @@ Page {
                 text: "Clear striked"
                 function clear_striked() {
                     var i = 0;
-                    for (i = 0; i <= listmodel.count; i++) {
+                    for (i = 0; i < listmodel.count; i++) {
+                        if (listmodel.get(i).deleted) {
+                            listmodel.remove(i)
+                        }
+                    }
+                    for (i = 0; i < listmodel.count; i++) {
                         if (listmodel.get(i).deleted) {
                             listmodel.remove(i)
                         }
                     }
                 }
-
                 onClicked: {
                     clear_striked()
                 }
@@ -107,7 +108,6 @@ Page {
                     do_add_item()
                 }
             }
-
         }
         
         // Tell SilicaFlickable the height of its content.
@@ -160,7 +160,6 @@ Page {
                  background: Component {
                      Rectangle {
                          id: customBackground
-
                          anchors.fill: parent
                          border {
                              color: parent.errorHighlight ?  "red" :"steelblue"
@@ -181,10 +180,5 @@ Page {
              }
 
         }
-
-
-
     }
 }
-
-
