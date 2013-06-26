@@ -23,12 +23,6 @@ Page {
         header: PageHeader {
             title: "QuickList"
         }
-        Button {
-            text: "Add item"
-            onClicked:{
-                do_add_item()
-            }
-        }
         Label {
             id: hintlbl
         }
@@ -109,14 +103,7 @@ Page {
                 }
             }
         }
-        
-        // Tell SilicaFlickable the height of its content.
-        contentHeight: childrenRect.height
-        
-        // Place our content in a Column.  The PageHeader is always placed at the top
-        // of the page, followed by our content.
-        Column {
-            TextField {
+        TextField {
                  id: additem
                  width: 300
                  placeholderText: ""
@@ -178,7 +165,5 @@ Page {
                      }
                  }
              }
-
-        }
     }
 }
