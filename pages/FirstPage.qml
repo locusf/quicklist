@@ -17,7 +17,7 @@ Page {
         id: itemview
         ViewPlaceholder {
             enabled: itemview.count == 0
-            text: "Add by pressing button or using menus."
+            text: "No items in list. Add by using pulley menu."
         }
         anchors.fill: parent
         header: PageHeader {
