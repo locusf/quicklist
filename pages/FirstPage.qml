@@ -105,7 +105,7 @@ Page {
         }
         TextField {
                  id: additem
-                 width: 300
+                 width: parent.width
                  placeholderText: ""
                  visible: false
                  horizontalAlignment: left
