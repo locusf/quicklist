@@ -39,9 +39,7 @@ Page {
         PullDownMenu {
             MenuItem {
                 text: "Clear all"
-                onClicked: do_remorse_clear()
-                function do_remorse_clear()
-                {
+                onClicked: {
                     clearRemorse.execute("Clearing", function() {
                         newmodel.clear()
                         delmodel.clear()
