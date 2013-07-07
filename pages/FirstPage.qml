@@ -7,6 +7,13 @@ Page {
         additem.visible = true
         additem.forceActiveFocus()
     }
+    function custom_add() {
+        Database.saveItem(additem.text)
+        newmodel.append({name: additem.text})
+        do_sort()
+        additem.text = ""
+        parent.focus = true
+    }
     function do_sort(obj)
     {
         var n;
@@ -77,6 +84,7 @@ Page {
                 title: "QuickList"
             }
             Row {
+
                 spacing: 40
                 width: parent.width
                 TextField {
@@ -88,13 +96,7 @@ Page {
                      Keys.onReturnPressed: {
                          custom_add()
                      }
-                     function custom_add() {
-                         Database.saveItem(additem.text)
-                         newmodel.append({name: additem.text})
-                         do_sort()
-                         additem.text = ""
-                         parent.focus = true
-                     }
+
                 }
                 Button {
                     text: "Add"
@@ -102,6 +104,8 @@ Page {
                     onClicked: {
                         if(additem.text.length == 0) {
                             pageStack.push(Qt.resolvedUrl("ItemsPage.qml"))
+                        } else {
+                            custom_add()
                         }
                     }
                 }
