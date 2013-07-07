@@ -119,20 +119,19 @@ Page {
                     id: newmodel
                 }
 
-                delegate: BackgroundItem {
-                    id: itemdelegate
-                    Label {
-                        id: itemlabel
-                        x: theme.paddingLarge
-                        text: name
+                delegate:
+                 TextSwitch {
+                    id: itemlabel
+                    x: theme.paddingLarge
+                    text: name
+                    checked: false
 
-                    }
                     onClicked: {
                         delmodel.append(newmodel.get(index))
                         newmodel.remove(index)
                     }
                     onPressAndHold: {
-                        delremorse.execute(itemdelegate, "Deleting " + name, function() {
+                        delremorse.execute(itemlabel, "Deleting " + name, function() {
                             newmodel.remove(index)
                         }, 2000)
                     }
@@ -143,21 +142,19 @@ Page {
                 model: ListModel {
                     id: delmodel
                 }
-                delegate: BackgroundItem {
-                    id: deldelegate
-                    Label {
-                        font.strikeout: true
-                        id: dellabel
-                        x: theme.paddingLarge
-                        text: name
-                    }
+                delegate: TextSwitch {
+                    id: dellabel
+                    checked: true
+                    x: theme.paddingLarge
+                    text: name
+
                     onClicked: {
                         newmodel.append(delmodel.get(index))
                         delmodel.remove(index)
                         do_sort()
                     }
                     onPressAndHold: {
-                        delremorse.execute(deldelegate, "Deleting " + name, function() {
+                        delremorse.execute(dellabel, "Deleting " + name, function() {
                             delmodel.remove(index)
                         }, 2000)
                     }
