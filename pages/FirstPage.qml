@@ -100,13 +100,19 @@ Page {
                 }
                 Button {
                     text: "Add"
-                    width: 150
+                    width: 80
                     onClicked: {
                         if(additem.text.length == 0) {
                             pageStack.push(Qt.resolvedUrl("ItemsPage.qml"))
                         } else {
                             custom_add()
                         }
+                    }
+                }
+                IconButton {
+                    icon.source: "image://theme/icon-l-cancel"
+                    onClicked: {
+                        delmodel.clear()
                     }
                 }
             }
