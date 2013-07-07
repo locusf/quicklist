@@ -23,6 +23,7 @@ Page {
         }
         model: ListModel {id: itemmodel}
         delegate: BackgroundItem {
+            id: itemlbl
             width: parent.width
             Label {
                 text: name
@@ -32,6 +33,13 @@ Page {
                 selectedItem = name
                 Signaler.addItem(name)
             }
+            onPressAndHold: {
+                delremorse.execute(itemlbl, "Deleting "+ name, function() {
+                    itemmodel.remove(index)
+                    Database.deleteItem(name)
+                }, 2000);
+            }
+            RemorseItem {id: delremorse}
         }
     }
 }

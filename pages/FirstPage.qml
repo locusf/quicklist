@@ -34,6 +34,7 @@ Page {
             }
         }
     }
+
     RemorsePopup {
         id: clearRemorse
     }

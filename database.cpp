@@ -51,3 +51,9 @@ void database::fireItems() {
         fireItem(query.record().value("item").toString());
     }
 }
+
+void database::deleteItem(QString item) {
+    QSqlQuery query = QSqlQuery(databaseconstants::DELETE_ITEM_FROM_TABLE, *db);
+    query.addBindValue(item);
+    query.exec();
+}

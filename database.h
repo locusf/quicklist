@@ -19,6 +19,7 @@ public slots:
     void createTables();
     bool saveItem(QString item);
     void fireItems();
+    void deleteItem(QString item);
 private:
     static database* m_instance;
     QSqlDatabase* db;
