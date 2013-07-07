@@ -22,16 +22,17 @@ Page {
             title: "Previous items"
         }
         model: ListModel {id: itemmodel}
-        delegate: BackgroundItem {
+        delegate: TextSwitch {
             id: itemlbl
             width: parent.width
-            Label {
-                text: name
-            }
+            text: name
+            checked: false
+            automaticCheck: false
             onClicked: {
-                pageStack.pop()
-                selectedItem = name
-                Signaler.addItem(name)
+                if (!itemlbl.checked) {
+                    Signaler.addItem(name)
+                    itemlbl.checked = true
+                }
             }
             onPressAndHold: {
                 delremorse.execute(itemlbl, "Deleting "+ name, function() {
