@@ -7,7 +7,6 @@ Page {
         additem.visible = true
         additem.forceActiveFocus()
     }
-
     function do_sort(obj)
     {
         var n;
@@ -36,6 +35,7 @@ Page {
         id: itemview
         contentHeight: childrenRect.height
         anchors.fill: parent
+        VerticalScrollDecorator {}
         PullDownMenu {
             MenuItem {
                 text: "Clear all"
@@ -59,61 +59,53 @@ Page {
                 }
             }
         }
-        PushUpMenu {
-            MenuItem {
-                text: "Add item"
-                onClicked: {
-                    do_add_item()
-                }
+
+        Connections {
+            target: Signaler
+            onItemAdded: {
+                newmodel.append({name: item})
+                do_sort()
+                additem.text = ""
+                parent.focus = true
             }
         }
-        TextField {
-             id: additem
-             width: 300
-             placeholderText: ""
-             horizontalAlignment: left
-             textMargin: 15
-             visible: false
-             Keys.onReturnPressed: {
-                 custom_add()
-             }
-             function custom_add() {
-                 additem.visible = false
-                 newmodel.append({name: additem.text})
-                 do_sort()
-                 additem.text = ""
-                 parent.focus = true
-             }
 
-
-             background: Component {
-                 Rectangle {
-                     id: customBackground
-                     anchors.fill: parent
-                     border {
-                         color: parent.errorHighlight ?  "red" :"steelblue"
-                         width: parent.errorHighlight ? 3 : 1
-                     }
-                     color: "steelblue"
-                     radius: 5
-                     smooth: true
-                     gradient: Gradient {
-                         GradientStop { position: 0.0; color: customBackground.color }
-                         GradientStop {
-                             position: 1.0;
-                             color: parent.errorHighlight ? "red" : Qt.darker(customBackground.color, 3.0)
-                         }
-                     }
-                 }
-             }
-        }
         Column {
             width: parent.width
             PageHeader {
                 id: header
                 title: "QuickList"
             }
-
+            Row {
+                spacing: 40
+                width: parent.width
+                TextField {
+                     id: additem
+                     width: 250
+                     placeholderText: ""
+                     horizontalAlignment: left
+                     textMargin: 15
+                     Keys.onReturnPressed: {
+                         custom_add()
+                     }
+                     function custom_add() {
+                         Database.saveItem(additem.text)
+                         newmodel.append({name: additem.text})
+                         do_sort()
+                         additem.text = ""
+                         parent.focus = true
+                     }
+                }
+                Button {
+                    text: "Add"
+                    width: 150
+                    onClicked: {
+                        if(additem.text.length == 0) {
+                            pageStack.push(Qt.resolvedUrl("ItemsPage.qml"))
+                        }
+                    }
+                }
+            }
             Repeater {
                 model: ListModel {
                     id: newmodel
@@ -154,13 +146,16 @@ Page {
                         do_sort()
                     }
                     onPressAndHold: {
-                        delremorse.execute(dellabel, "Deleting " + name, function() {
+                        cdelremorse.execute(dellabel, "Deleting " + name, function() {
                             delmodel.remove(index)
                         }, 2000)
                     }
+                    RemorseItem {id: cdelremorse}
                 }
             }
+
         }
+
     }
 }
 

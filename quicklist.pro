@@ -2,10 +2,16 @@
 TARGET = quicklist
 
 # C++ sources
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    database.cpp \
+    databaseconstants.cpp \
+    signaler.cpp
 
 # C++ headers
-HEADERS +=
+HEADERS += \
+    database.h \
+    databaseconstants.h \
+    signaler.h
 
 # QML files and folders
 qml.files = *.qml pages cover main.qml

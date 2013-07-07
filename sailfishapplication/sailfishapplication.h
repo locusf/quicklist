@@ -5,6 +5,8 @@
 class QString;
 class QApplication;
 class QDeclarativeView;
+#include "database.h"
+#include "signaler.h"
 
 namespace Sailfish {
 

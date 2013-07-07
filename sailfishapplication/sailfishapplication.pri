@@ -1,4 +1,4 @@
-QT += declarative
+QT += declarative sql
 
 SOURCES += $$PWD/sailfishapplication.cpp
 HEADERS += $$PWD/sailfishapplication.h

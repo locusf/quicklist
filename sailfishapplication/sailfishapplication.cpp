@@ -48,7 +48,8 @@ QDeclarativeView *Sailfish::createView(const QString &file)
         path = QString(DEPLOYMENT_PATH);
     }
     view->setSource(QUrl::fromLocalFile(path + file));
-    
+    view->rootContext()->setContextProperty("Database", database::instance());
+    view->rootContext()->setContextProperty("Signaler", signaler::instance());
     return view;
 }
 
