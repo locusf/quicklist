@@ -1,13 +1,13 @@
-Name: quicklist
+Name: harbour-quicklist
 Summary: quicklist Evernote client
-Version: 0.1
+Version: 0.2
 Release: 1
 Group: Qt/Qt
 License: LICENSE
 Sources:
 - '%{name}-%{version}.tar.bz2'
-Description: |
-  Short description of my SailfishOS Application
+Description: |-
+  Quicklist is an application for creating eg. shopping list quickly.
 Configure: none
 Builder: qtc5
 PkgConfigBR:
@@ -18,14 +18,9 @@ PkgConfigBR:
 Requires:
 - sailfishsilica-qt5
 - mapplauncherd-booster-silica-qt5
-- boost-devel
-- qt5-webkit
 Files:
-- /opt/sdk/bin
 - /usr/share/applications
-- /usr/share/quicklist
 - /usr/bin
-- /opt/sdk/share/quicklist
-- /opt/sdk/share/applications
-- 
+- /usr/share/icons/hicolor/86x86/apps
+- /usr/share/harbour-quicklist
 PkgBR: []

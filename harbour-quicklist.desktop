@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Quicklist
+Icon=harbour-quicklist
+Exec=harbour-quicklist
+Comment=Sailfish UI application
+X-Nemo-Application-Type=no-invoker

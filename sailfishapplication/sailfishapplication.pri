@@ -4,19 +4,21 @@ SOURCES += $$PWD/sailfishapplication.cpp
 HEADERS += $$PWD/sailfishapplication.h
 INCLUDEPATH += $$PWD
 
-TARGETPATH = /opt/sdk/bin
+TARGETPATH = /usr/bin
 target.path = $$TARGETPATH
 
-DEPLOYMENT_PATH = /opt/sdk/share/$$TARGET
+DEPLOYMENT_PATH = /usr/share/$$TARGET
 qml.path = $$DEPLOYMENT_PATH
-desktop.path = /opt/sdk/share/applications
+desktop.path = /usr/share/applications
 
 contains(CONFIG, desktop) {
     DEFINES *= DESKTOP
     QT += opengl
 }
+icon.files = harbour-quicklist.png
+icon.path = /usr/share/icons/hicolor/86x86/apps
 
-INSTALLS += target qml desktop
+INSTALLS += target qml desktop icon
 
 DEFINES += DEPLOYMENT_PATH=\"\\\"\"$${DEPLOYMENT_PATH}/\"\\\"\"
 

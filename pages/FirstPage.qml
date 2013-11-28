@@ -41,7 +41,6 @@ Page {
     // To enable PullDownMenu, place our content in a SilicaFlickable
     SilicaFlickable {
         id: itemview
-        contentHeight: childrenRect.height
         anchors.fill: parent
         VerticalScrollDecorator {}
         PullDownMenu {

@@ -1,5 +1,5 @@
 # The name of your app
-TARGET = quicklist
+TARGET = harbour-quicklist
 
 # C++ sources
 SOURCES += main.cpp \
@@ -17,7 +17,7 @@ HEADERS += \
 qml.files = *.qml pages cover main.qml
 
 # The .desktop file
-desktop.files = quicklist.desktop
+desktop.files = harbour-quicklist.desktop
 
 # Please do not modify the following line.
 include(sailfishapplication/sailfishapplication.pri)
